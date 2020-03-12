@@ -368,6 +368,9 @@
     color: #e5e5e5;
   }
 
+  #myCanvas{
+    min-width:400px;
+  }
   .cancel-bt {
     font-family: "Museo Sans Rounded 900";
     width: 80px;
@@ -389,15 +392,18 @@
   .output-wrap div{
     font-family: "Museo Sans Rounded 900";
     color:#fff;
-    padding-left: 25px;
     font-size:22px;
     letter-spacing:1px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
   }
+  .output-head{
+    padding-left: 25px;
+  }
   .output-row{
     height:60% !important;
+    min-width:400px;
   }
   .output-row:last-child{
     margin-top:20px !important;
@@ -415,6 +421,9 @@
     font-size:20px;
     letter-spacing: 1px;
     color:#fff;
+  }
+  .row-wrap{
+    display:flex;
   }
 </style>
 <style scoped>
