@@ -74,7 +74,7 @@
             </el-row>
           </el-col>
         </el-row>
-        <el-row class="output-row">
+        <el-row ref="canvas" class="output-row">
           <div class="output-wrap">
             <div :class="dark? 'output-head head-dark':'output-head'">
               <span>Canvas</span>
@@ -84,7 +84,7 @@
             </div>
           </div>
         </el-row>
-        <el-row class="output-row">
+        <el-row ref="output" class="output-row">
           <div class="output-wrap">
             <div :class="dark? 'output-head head-dark':'output-head'">
               <span>Output</span>
@@ -122,7 +122,7 @@
       </el-col>
     </el-row>
   </div>
-</template>n
+</template>
 
 <script>
   import axios from 'axios'
@@ -135,8 +135,13 @@
   import 'codemirror/theme/neo.css'
   import 'codemirror/keymap/sublime.js'
   import 'codemirror/keymap/emacs.js'
-  import 'codemirror/addon/edit/matchbrackets'
-  import 'codemirror/addon/edit/closebrackets'
+  import 'codemirror/addon/edit/matchbrackets.js'
+  import 'codemirror/addon/edit/closebrackets.js'
+  import 'codemirror/addon/hint/show-hint.css'
+  import 'codemirror/addon/hint/show-hint.js'
+  import 'codemirror/addon/hint/css-hint.js'
+  import 'codemirror/addon/scroll/simplescrollbars.js'
+  import 'codemirror/addon/scroll/simplescrollbars.css'
 
   export default {
     name: 'PythonEditor',
@@ -176,8 +181,10 @@
           keyMap: 'sublime',
           spellcheck: true,
           autocorrect: true,
-          lineWrapping:true,
-
+          lineWrapping:false,
+          matchBrackets:true,
+          autoCloseBrackets:true,
+          scrollBarStyle: 'simple',
         },
         editorHeight: '',
       }
@@ -353,11 +360,12 @@
         console.log(editorHeight)
         document.getElementById('codeMirrorWrapper').style.height = (editorHeight - 140) + 'px';
         this.$refs.aside.style.height = (editorHeight - 140) + 'px';
+        this.$refs.canvas.style.height - (editorHeight - 500) + 'px';
       },20)
     }
   }
 </script>
-<style>
+<style lang="scss">
   .dialog-wrap .el-dialog .el-dialog__header .el-dialog__title {
     font-family: "Museo Sans Rounded 900";
   }
