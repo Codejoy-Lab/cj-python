@@ -1,0 +1,40 @@
+body {
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+}
+
+@function rem($px){
+  @return $px / $fs * 1rem
+}
+$fs:14; //基础字号
+
+label {
+  font-weight: 700;
+}
+
+html{
+  font-size:$fs+px;
+  min-width:1500px;
+  height:100%;
+  width:100%;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width:1450px) and (max-height: 800px){
+  html{
+    font-size: 12px;
+    min-width:1200px;
+  }
+}
+@media screen and (max-width:1025px) and (max-height: 800px) {
+  html {
+    font-size: 10px;
+  }
+}
+
+#app{
+  height:100%;
+}

@@ -33,7 +33,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  @import '../../assets/style/index.scss';
   .logo-wrap{
     height:100%;
     width: fit-content;
@@ -46,7 +47,7 @@ export default {
     display: flex;
     width: fit-content;
     align-items: center;
-    margin: 0 38px 0 0;
+    margin: 0 rem(38) 0 0;
   }
 
   .credit{
@@ -89,7 +90,7 @@ export default {
   }
   .logo{
     height:48.5%;
-    margin-left: 25px;
+    margin-left: rem(25);
   }
   .col-wrap, .row-bg{
     height: 100%;
@@ -98,7 +99,7 @@ export default {
     height:35%;
     display:flex;
     align-items: flex-start;
-    margin-left: 3px;
+    margin-left: rem(3);
   }
   .right-wrap{
     display: flex;
