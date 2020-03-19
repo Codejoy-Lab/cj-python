@@ -21,10 +21,10 @@
       </div>
       <div :class="folded? 'folded':'tutorial'">
         <div class="tutorial-title">
-          <span v-for="(item,index) in tutorials" v-if="index=== checkedValue">{{item.step}}</span>
+          <span v-for="(item,index) in tutorials" :key="index" v-if="index=== checkedValue">{{item.step}}</span>
         </div>
         <div class="tutorial-content">
-          <span v-for="(item,index) in tutorials" v-if="index=== checkedValue">{{item.tutorial}}</span>
+          <span v-for="(item,index) in tutorials" :key="index" v-if="index=== checkedValue">{{item.tutorial}}</span>
         </div>
       </div>
     </div>
@@ -62,6 +62,9 @@ export default {
       ]
     }
   },
+  methods () {
+
+  }
 }
 
 </script>

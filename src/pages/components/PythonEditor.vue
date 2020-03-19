@@ -7,11 +7,20 @@
             <div :class="instructionWrap">Instruction</div>
             <el-button :class="array" @click="fold"></el-button>
           </div>
-          <div ref="aside" class="asaid">
-            <PythonTutorial
-              v-bind:folded="folded"
-              v-bind:dark="dark"
-            />
+          <div class="tutorial-wrap">
+          <div style="width: 100%; height: 800px; background-color: white">
+            <el-container style="height: 100%; width: 100%">
+              <el-aside width="40px" style="background-color:gold">
+                <div v-for="(item,index) in file" :key="index">
+                <el-button type="warning" icon="el-icon-star-off" circle @click="show(item)"></el-button>
+                </div>
+              </el-aside>
+              <el-container>
+                <div>{{this.tutorial}}
+                </div>
+              </el-container>
+            </el-container>
+          </div>
           </div>
         </div>
 
@@ -99,26 +108,6 @@
             </el-input>
           </div>
         </el-row>
-        <!--<el-row class="panel-row">-->
-        <!--<el-tabs id="result-panel-tabs" type="card" :class="dark? 'result-el-tabs inner-dark':'result-el-tabs'">-->
-        <!--<el-tab-pane id="Panel" :class="dark? 'console-el-tab-pane canvas-dark':'console-el-tab-pane'"-->
-        <!--label="Panel">-->
-        <!--<div class="result-wrap">-->
-        <!--<el-input-->
-        <!--:class="dark? 'panel-input canvas-dark':'panel-input'"-->
-        <!--type="textarea"-->
-        <!--placeholder="result"-->
-        <!--v-model="outPrint">-->
-        <!--</el-input>-->
-        <!--</div>-->
-        <!--</el-tab-pane>-->
-        <!--<el-tab-pane id="Shell" class="console-el-tab-pane" label="Shell">-->
-        <!--<div class="result-wrap" style="overflow: auto">-->
-        <!--&lt;!&ndash;<div :class="this.dark? 'canvas canvas-dark':'canvas'" id="myCanvas"></div>&ndash;&gt;-->
-        <!--</div>-->
-        <!--</el-tab-pane>-->
-        <!--</el-tabs>-->
-        <!--</el-row>-->
       </el-col>
     </el-row>
   </div>
@@ -128,7 +117,7 @@
 import axios from 'axios'
 import Sk from '@hwc/skulpt'
 
-import PythonTutorial from './PythonTutorial'
+// import PythonTutorial from './PythonTutorial'
 
 import 'codemirror/mode/python/python.js'
 import 'codemirror/theme/monokai.css'
@@ -146,7 +135,7 @@ import 'codemirror/addon/scroll/simplescrollbars.css'
 export default {
   name: 'PythonEditor',
   components: {
-    PythonTutorial
+    //  PythonTutorial
   },
   data () {
     return {
@@ -187,11 +176,12 @@ export default {
         scrollBarStyle: 'simple'
       },
       editorHeight: '',
-      tutorials: []
+      file: Array,
+      tutorial: ''
     }
   },
   methods: {
-    change(tab) {
+    change (tab) {
       // console.log(tab)
       if (this.dark) {
         const clickedID = 'tab-' + tab.index
@@ -205,7 +195,7 @@ export default {
         })
       }
     },
-    changeTheme() {
+    changeTheme () {
       let tab3 = document.getElementsByClassName('el-tabs__item is-top is-active')
       // let navTab = document.getElementsByClassName('el-tabs__nav')
       // let activeTab = document.getElementsByClassName('el-tabs__item is-top')
@@ -261,7 +251,12 @@ export default {
         // })
       }
     },
-    fold() {
+    show (item) {
+      this.tutorial = item.tutorial
+      this.codes = item.code
+      console.log(this.codes)
+    },
+    fold () {
       // console.log("clicked")
       if (!this.folded) {
         this.asideWidth = '50px'
@@ -281,8 +276,7 @@ export default {
         this.asaidWrap = 'asaid-wrap'
       }
     },
-
-    runIt() {
+    runIt () {
       this.outPrint = ''
       Sk.configure({
         output: (text) => {
@@ -308,8 +302,7 @@ export default {
       })
       console.log(this.codes)
     },
-
-    save() {
+    save () {
       this.date = new Date().getTime()
       let data = {username: this.username, filename: this.form.name, file: this.codes, date: this.date}
       if (this.state === 'Y') {
@@ -318,30 +311,32 @@ export default {
             console.log('res=>', res)
             this.dialogFormVisible = false
           }).catch(err => this.$notify({
-          type: 'error',
-          message: err
-        }))
+            type: 'error',
+            message: err
+          }))
       } else {
         axios.post(process.env.API_HOST + `/python/uploadFile/:id`, data)
           .then(res => {
             console.log('res=>', res)
             this.dialogFormVisible = false
           }).catch(err => this.$notify({
-          type: 'error',
-          message: err
-        }))
+            type: 'error',
+            message: err
+          }))
       }
       this.dialogFormVisible = false
     },
-    onCmCodeChange(newCode) {
+    onCmCodeChange (newCode) {
       this.codes = newCode
     },
-    handleMessage(event) {
+    handleMessage (event) {
       const cmd = event.data.cmd
       if (cmd === 'success') {
-        this.codes = event.data.file
+        // this.codes = event.data.file
         this.username = event.data.username
         this.state = event.data.state
+        this.file = JSON.parse(event.data.file)
+        console.log('123', this.file)
         this.filename = event.data.filename
         console.log('filename', this.filename)
         if (this.filename !== undefined) {
@@ -361,7 +356,7 @@ export default {
       console.log(editorHeight)
       document.getElementById('codeMirrorWrapper').style.height = (editorHeight - 140) + 'px'
       this.$refs.aside.style.height = (editorHeight - 140) + 'px'
-      this.$refs.canvas.style.height - (editorHeight - 600) + 'px'
+      this.$refs.canvas.style.height = (editorHeight - 600) + 'px'
     }, 20)
   }
 }
@@ -521,7 +516,6 @@ export default {
       }
     }
   }
-
 
   .el-button + .el-button {
     margin-left: 0;
